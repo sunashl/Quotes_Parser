@@ -1,8 +1,6 @@
 import requests
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/114 Safari/537.36"
-}
+from bs4 import BeautifulSoup
+from config import headers, classes
 
 def get_html(url): 
     try:
@@ -21,4 +19,18 @@ def get_html(url):
         
     return None
 
+
+def get_links(html):
+    soup = BeautifulSoup(html, 'lxml')
     
+    links = soup.find_all('a', class_=classes["links"])
+    all_vacancy_links = {}
+    
+    for vacancy in links:
+        vacancy_title = vacancy.text
+        vacancy_link = vacancy.get('href')
+        
+        all_vacancy_links[vacancy_title] = vacancy_link
+    return all_vacancy_links
+
+

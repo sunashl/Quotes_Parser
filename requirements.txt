@@ -2,3 +2,6 @@
 
 requests
 
+BeaurifulSoup
+
+lxml
