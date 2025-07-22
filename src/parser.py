@@ -8,6 +8,7 @@ headers = {
 
 
 def get_html(url): 
+    
     try:
         response = requests.get(url, headers=headers, timeout=(3, 5))
         response.raise_for_status()
@@ -25,15 +26,27 @@ def get_html(url):
     return None
 
 
-def parse_quotes(html):
+def parse_quotes(html, limit):
+    
     soup = BeautifulSoup(html, 'lxml')
     data = []
+    count = 0
     
-    for i in range(10):
-        quote = soup.find('span', class_='text')
-        author = soup.find('small', class_='author')
-        data.append([quote],[author])
+    if limit > 10:
+        return data
+    else:
+        quotes = soup.find_all('div', class_='quote')
+        for quote in quotes[:limit]:
+            text = quote.find('span', class_='text')
+            author = quote.find('small', class_='author')
+            tags = [tag.text.strip() for tag in quote.find_all('a', class_='tag')]
+            
+            if text and author:
+                data.append({
+                    'quote': text.text.strip(),
+                    'author': author.text.strip(),
+                    'tags': tags
+                })
+            else: continue
     
     return data
-    
-        
