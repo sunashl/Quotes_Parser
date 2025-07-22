@@ -1,6 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-from config import headers, classes
+
+headers = {
+    "Accept": "*/*",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+}
+
 
 def get_html(url): 
     try:
@@ -20,17 +25,15 @@ def get_html(url):
     return None
 
 
-def get_links(html):
+def parse_quotes(html):
     soup = BeautifulSoup(html, 'lxml')
+    data = []
     
-    links = soup.find_all('a', class_=classes["links"])
-    all_vacancy_links = {}
+    for i in range(10):
+        quote = soup.find('span', class_='text')
+        author = soup.find('small', class_='author')
+        data.append([quote],[author])
     
-    for vacancy in links:
-        vacancy_title = vacancy.text
-        vacancy_link = vacancy.get('href')
+    return data
+    
         
-        all_vacancy_links[vacancy_title] = vacancy_link
-    return all_vacancy_links
-
-
