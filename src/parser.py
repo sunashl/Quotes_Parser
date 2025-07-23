@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-headers = {
+HEADERS = {
     "Accept": "*/*",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
 }
@@ -10,7 +10,7 @@ headers = {
 def get_html(url): 
     
     try:
-        response = requests.get(url, headers=headers, timeout=(3, 5))
+        response = requests.get(url, headers=HEADERS, timeout=(3, 5))
         response.raise_for_status()
         return response.text
     

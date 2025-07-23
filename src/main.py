@@ -1,6 +1,6 @@
-from saver import csv_saver
 from parser import get_html, parse_quotes
-from limit import ask_limit
+from user_input import ask_limit, ask_format
+from saver import csv_saver, json_saver
 
 def main(url: str):
     
@@ -13,8 +13,13 @@ def main(url: str):
             
     data = parse_quotes(html, limit)
     if data:
-        csv_saver(data)
-        print(f'Успешно сохранено {len(data)} цитат(ы) в файл: "data/quotes.csv"')
+        format = ask_format()
+        if format == 'csv':
+            csv_saver(data)
+            print(f'Успешно сохранено {len(data)} цитат(ы) в файл "data/quotes.csv"')
+        elif format == 'json':
+            json_saver(data)
+            print(f'Успешно сохранено {len(data)} цитат(ы) в файл "data/quotes.json"')
     else:
         print("Цитаты не найдены или пустой результат.")
     
